@@ -860,6 +860,18 @@ section {
   }
   .hero {
     padding-top: 7rem;
+    padding-bottom: 2rem;
+  }
+  .hero__meta {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .hero__meta div + div {
+    padding-left: 0;
+    border-left: none;
+  }
+  .hero__scroll {
+    display: none;
   }
   .work-tab__title {
     font-size: 1rem;
