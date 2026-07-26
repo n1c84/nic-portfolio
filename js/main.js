@@ -42,12 +42,38 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  gsap.utils.toArray(".hero__eyebrow, .hero__sub, .hero__meta").forEach((el, i) => {
+  gsap.utils.toArray(".hero__eyebrow, .hero__taglines, .hero__sub").forEach((el, i) => {
     gsap.fromTo(
       el,
       { opacity: 0, y: 20 },
       { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", delay: 0.5 + i * 0.12 }
     );
+  });
+
+  /* ---------- Statement: word-by-word scroll reveal ---------- */
+  gsap.utils.toArray("[data-words]").forEach((el) => {
+    // Wrap each word in its own span so it can be lit individually
+    const words = el.textContent.trim().split(/\s+/);
+    el.textContent = "";
+    words.forEach((w, i) => {
+      const span = document.createElement("span");
+      span.className = "statement__word";
+      span.textContent = i < words.length - 1 ? w + " " : w;
+      el.appendChild(span);
+    });
+    el.setAttribute("data-split", "");
+
+    gsap.to(el.querySelectorAll(".statement__word"), {
+      color: "rgba(243, 241, 236, 1)",
+      ease: "none",
+      stagger: 1,
+      scrollTrigger: {
+        trigger: el,
+        start: "top 78%",
+        end: "bottom 55%",
+        scrub: 0.6,
+      },
+    });
   });
 
   /* ---------- Generic scroll reveals ---------- */
@@ -100,6 +126,14 @@ document.addEventListener("DOMContentLoaded", () => {
     workTabs[index].classList.add("is-active");
     workTabs[index].setAttribute("aria-selected", "true");
     if (stageCurrent) stageCurrent.textContent = String(index + 1).padStart(2, "0");
+
+    // When the tab strip scrolls horizontally (mobile), keep the active pill in view
+    const tabsWrap = document.querySelector(".work-tabs");
+    if (tabsWrap && tabsWrap.scrollWidth > tabsWrap.clientWidth + 4) {
+      const tab = workTabs[index];
+      const target = tab.offsetLeft - (tabsWrap.clientWidth - tab.offsetWidth) / 2;
+      tabsWrap.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+    }
 
     const tl = gsap.timeline({
       onComplete: () => {
