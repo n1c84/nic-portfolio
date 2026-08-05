@@ -1225,5 +1225,24 @@ section {
   .about__stats {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    text-align: center;
+  }
+  /* The caption is a max-width block, so it needs auto margins to sit
+     centred rather than just having its text centred inside a left box */
+  .about__stats span {
+    margin-inline: auto;
+  }
+
+  .skills-heading {
+    text-align: center;
+  }
+  .skills-list li {
+    align-items: center;
+    text-align: center;
+  }
+  /* The hover slide would push centred rows off-axis, and it is a hover
+     affordance on a touch surface anyway */
+  .skills-list li:hover {
+    padding-left: 0;
   }
 }
