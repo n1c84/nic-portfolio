@@ -1028,6 +1028,24 @@ section {
   flex-wrap: wrap;
 }
 
+/* Information, not an affordance — no underline, no hover, no pointer.
+   It must not resemble the anchors it sits beside. */
+.contact__handle {
+  font-size: 0.95rem;
+  color: var(--fg-dim);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  cursor: default;
+}
+.contact__handle span {
+  color: var(--fg);
+  font-weight: 500;
+  margin-left: 0.1rem;
+  /* Selectable so it can be copied straight into WhatsApp's search */
+  user-select: all;
+}
+
 .contact__link {
   font-size: 1.1rem;
   border-bottom: 1px solid var(--line-strong);
