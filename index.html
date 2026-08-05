@@ -5,12 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Nic Whitby — Graphic &amp; Digital Designer</title>
 <meta name="description" content="Nic Whitby is a graphic and digital designer crafting brand identities, responsive websites and marketing collateral for SMEs." />
+<!-- Marks that JS is alive. The CSS reveal start-states key off this, so if
+     scripting fails the page renders its content instead of staying blank. -->
+<script>document.documentElement.classList.add("js")</script>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+
+<a class="skip-link" href="#main">Skip to content</a>
 
 <nav class="site-nav">
   <div class="site-nav__pill">
@@ -50,6 +56,8 @@
   <span class="hero__scroll">Scroll</span>
 </header>
 
+<main id="main">
+
 <section class="statement">
   <div class="container">
     <p class="statement__text" data-words>I design brands that look considered and websites that convert. Ten years of typography, hierarchy and restraint — applied to businesses that deserve to look bigger than they are.</p>
@@ -65,32 +73,32 @@
 
     <div class="work-switcher" data-reveal>
 
-      <div class="work-tabs" role="tablist">
-        <button class="work-tab is-active" data-index="0" role="tab" aria-selected="true">
+      <div class="work-tabs" role="tablist" aria-label="Selected projects">
+        <button class="work-tab is-active" data-index="0" role="tab" id="work-tab-0" aria-controls="work-panel-0" aria-selected="true" tabindex="0">
           <span class="work-tab__index">01</span>
           <span class="work-tab__title">Roberts Electrical</span>
         </button>
-        <button class="work-tab" data-index="1" role="tab" aria-selected="false">
+        <button class="work-tab" data-index="1" role="tab" id="work-tab-1" aria-controls="work-panel-1" aria-selected="false" tabindex="-1">
           <span class="work-tab__index">02</span>
           <span class="work-tab__title">Ravens Perch Coffee</span>
         </button>
-        <button class="work-tab" data-index="2" role="tab" aria-selected="false">
+        <button class="work-tab" data-index="2" role="tab" id="work-tab-2" aria-controls="work-panel-2" aria-selected="false" tabindex="-1">
           <span class="work-tab__index">03</span>
           <span class="work-tab__title">PayPal iOS App Redesign</span>
         </button>
-        <button class="work-tab" data-index="3" role="tab" aria-selected="false">
+        <button class="work-tab" data-index="3" role="tab" id="work-tab-3" aria-controls="work-panel-3" aria-selected="false" tabindex="-1">
           <span class="work-tab__index">04</span>
           <span class="work-tab__title">Henstone Collateral</span>
         </button>
-        <button class="work-tab" data-index="4" role="tab" aria-selected="false">
+        <button class="work-tab" data-index="4" role="tab" id="work-tab-4" aria-controls="work-panel-4" aria-selected="false" tabindex="-1">
           <span class="work-tab__index">05</span>
           <span class="work-tab__title">Liverpool Pound</span>
         </button>
-        <button class="work-tab" data-index="5" role="tab" aria-selected="false">
+        <button class="work-tab" data-index="5" role="tab" id="work-tab-5" aria-controls="work-panel-5" aria-selected="false" tabindex="-1">
           <span class="work-tab__index">06</span>
           <span class="work-tab__title">Shine Dental Implants</span>
         </button>
-        <button class="work-tab" data-index="6" role="tab" aria-selected="false">
+        <button class="work-tab" data-index="6" role="tab" id="work-tab-6" aria-controls="work-panel-6" aria-selected="false" tabindex="-1">
           <span class="work-tab__index">07</span>
           <span class="work-tab__title">broken SPARK</span>
         </button>
@@ -109,7 +117,7 @@
 
         <div class="work-panels">
 
-          <article class="work-panel is-active" data-index="0">
+          <article class="work-panel is-active" data-index="0" id="work-panel-0" role="tabpanel" aria-labelledby="work-tab-0" tabindex="-1">
             <div class="work-panel__tags"><span>Branding</span><span>Logo Design</span><span>Collateral</span></div>
             <h3 class="work-panel__title">Roberts Electrical — Brand Identity &amp; Stationery</h3>
             <div class="work-panel__meta">
@@ -118,8 +126,14 @@
               <div><strong>Full Identity System</strong>Scope</div>
             </div>
             <div class="work-panel__media">
-              <img src="assets/images/projects/roberts-electrical-1.jpg" alt="Roberts Electrical logo lockup in navy and gold" />
-              <img src="assets/images/projects/roberts-electrical-2.jpg" alt="Roberts Electrical branded invoice template" />
+              <picture>
+                <source type="image/webp" srcset="assets/images/projects/roberts-electrical-1-640.webp 640w, assets/images/projects/roberts-electrical-1-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 45vw" />
+                <img src="assets/images/projects/roberts-electrical-1.jpg" alt="Roberts Electrical logo lockup in navy and gold" width="1800" height="981" fetchpriority="high" decoding="async"  />
+              </picture>
+              <picture>
+                <source type="image/webp" srcset="assets/images/projects/roberts-electrical-2-640.webp 640w, assets/images/projects/roberts-electrical-2-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 45vw" />
+                <img src="assets/images/projects/roberts-electrical-2.jpg" alt="Roberts Electrical branded invoice template" width="1800" height="1361" fetchpriority="high" decoding="async"  />
+              </picture>
             </div>
             <div class="work-panel__body">
               <div>
@@ -137,7 +151,7 @@
             </div>
           </article>
 
-          <article class="work-panel" data-index="1">
+          <article class="work-panel" data-index="1" id="work-panel-1" role="tabpanel" aria-labelledby="work-tab-1" tabindex="-1">
             <div class="work-panel__tags"><span>Branding</span><span>Website</span><span>Packaging</span></div>
             <h3 class="work-panel__title">Ravens Perch Coffee — Complete Design</h3>
             <div class="work-panel__meta">
@@ -146,8 +160,14 @@
               <div><strong>+80% Visitation</strong>Result</div>
             </div>
             <div class="work-panel__media">
-              <img src="assets/images/projects/ravens-perch-1.jpg" alt="Ravens Perch Coffee brand and packaging design" />
-              <img src="assets/images/projects/ravens-perch-2.jpg" alt="Ravens Perch Coffee wallpaper and brand mark" />
+              <picture>
+                <source type="image/webp" srcset="assets/images/projects/ravens-perch-1-640.webp 640w, assets/images/projects/ravens-perch-1-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 45vw" />
+                <img src="assets/images/projects/ravens-perch-1.jpg" alt="Ravens Perch Coffee brand and packaging design" width="1800" height="1003" loading="lazy" decoding="async"  />
+              </picture>
+              <picture>
+                <source type="image/webp" srcset="assets/images/projects/ravens-perch-2-640.webp 640w, assets/images/projects/ravens-perch-2-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 45vw" />
+                <img src="assets/images/projects/ravens-perch-2.jpg" alt="Ravens Perch Coffee wallpaper and brand mark" width="1800" height="1012" loading="lazy" decoding="async"  />
+              </picture>
             </div>
             <div class="work-panel__body">
               <div>
@@ -170,7 +190,7 @@
             </div>
           </article>
 
-          <article class="work-panel" data-index="2">
+          <article class="work-panel" data-index="2" id="work-panel-2" role="tabpanel" aria-labelledby="work-tab-2" tabindex="-1">
             <div class="work-panel__tags"><span>Branding</span><span>UI</span></div>
             <h3 class="work-panel__title">PayPal iOS App Redesign</h3>
             <div class="work-panel__meta">
@@ -179,8 +199,14 @@
               <div><strong>Selected — Final Stages</strong>Result</div>
             </div>
             <div class="work-panel__media">
-              <img src="assets/images/projects/paypal-1.jpg" alt="PayPal iOS app redesign screens" />
-              <img src="assets/images/projects/paypal-2.jpg" alt="PayPal iOS app redesign detail" />
+              <picture>
+                <source type="image/webp" srcset="assets/images/projects/paypal-1-640.webp 640w, assets/images/projects/paypal-1-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 45vw" />
+                <img src="assets/images/projects/paypal-1.jpg" alt="PayPal iOS app redesign screens" width="1800" height="1186" loading="lazy" decoding="async"  />
+              </picture>
+              <picture>
+                <source type="image/webp" srcset="assets/images/projects/paypal-2-640.webp 640w, assets/images/projects/paypal-2-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 45vw" />
+                <img src="assets/images/projects/paypal-2.jpg" alt="PayPal iOS app redesign detail" width="1800" height="1200" loading="lazy" decoding="async"  />
+              </picture>
             </div>
             <div class="work-panel__body">
               <div>
@@ -203,7 +229,7 @@
             </div>
           </article>
 
-          <article class="work-panel" data-index="3">
+          <article class="work-panel" data-index="3" id="work-panel-3" role="tabpanel" aria-labelledby="work-tab-3" tabindex="-1">
             <div class="work-panel__tags"><span>Marketing Collateral</span></div>
             <h3 class="work-panel__title">Henstone Collateral</h3>
             <div class="work-panel__meta">
@@ -212,7 +238,10 @@
               <div><strong>Gin Bottle Launch</strong>Occasion</div>
             </div>
             <div class="work-panel__media">
-              <img src="assets/images/projects/henstone-1.jpg" alt="Henstone Distillery gin bottle marketing collateral" />
+              <picture>
+                <source type="image/webp" srcset="assets/images/projects/henstone-1-640.webp 640w, assets/images/projects/henstone-1-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 45vw" />
+                <img src="assets/images/projects/henstone-1.jpg" alt="Henstone Distillery gin bottle marketing collateral" width="1800" height="1200" loading="lazy" decoding="async"  />
+              </picture>
             </div>
             <div class="work-panel__body">
               <div>
@@ -229,7 +258,7 @@
             </div>
           </article>
 
-          <article class="work-panel" data-index="4">
+          <article class="work-panel" data-index="4" id="work-panel-4" role="tabpanel" aria-labelledby="work-tab-4" tabindex="-1">
             <div class="work-panel__tags"><span>Website</span></div>
             <h3 class="work-panel__title">Liverpool Pound Website Design</h3>
             <div class="work-panel__meta">
@@ -238,8 +267,14 @@
               <div><strong>Responsive, Desktop &amp; Mobile</strong>Scope</div>
             </div>
             <div class="work-panel__media">
-              <img src="assets/images/projects/liverpool-pound-1.jpg" alt="Liverpool Pound website homepage design" />
-              <img src="assets/images/projects/liverpool-pound-2.jpg" alt="Liverpool Pound website detail view" />
+              <picture>
+                <source type="image/webp" srcset="assets/images/projects/liverpool-pound-1-640.webp 640w, assets/images/projects/liverpool-pound-1-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 45vw" />
+                <img src="assets/images/projects/liverpool-pound-1.jpg" alt="Liverpool Pound website homepage design" width="1800" height="1012" loading="lazy" decoding="async"  />
+              </picture>
+              <picture>
+                <source type="image/webp" srcset="assets/images/projects/liverpool-pound-2-640.webp 640w, assets/images/projects/liverpool-pound-2-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 45vw" />
+                <img src="assets/images/projects/liverpool-pound-2.jpg" alt="Liverpool Pound website detail view" width="1800" height="1050" loading="lazy" decoding="async"  />
+              </picture>
             </div>
             <div class="work-panel__body">
               <div>
@@ -256,7 +291,7 @@
             </div>
           </article>
 
-          <article class="work-panel" data-index="5">
+          <article class="work-panel" data-index="5" id="work-panel-5" role="tabpanel" aria-labelledby="work-tab-5" tabindex="-1">
             <div class="work-panel__tags"><span>Logo Design</span><span>Collateral</span></div>
             <h3 class="work-panel__title">Shine Dental Implants — Branding</h3>
             <div class="work-panel__meta">
@@ -265,8 +300,14 @@
               <div><strong>+25% Mobile Conversion</strong>Result</div>
             </div>
             <div class="work-panel__media">
-              <img src="assets/images/projects/shine-dental-1.jpg" alt="Shine Dental Implants logo and branding" />
-              <img src="assets/images/projects/shine-dental-2.jpg" alt="Shine Dental Implants marketing collateral" />
+              <picture>
+                <source type="image/webp" srcset="assets/images/projects/shine-dental-1-640.webp 640w, assets/images/projects/shine-dental-1-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 45vw" />
+                <img src="assets/images/projects/shine-dental-1.jpg" alt="Shine Dental Implants logo and branding" width="1800" height="1201" loading="lazy" decoding="async"  />
+              </picture>
+              <picture>
+                <source type="image/webp" srcset="assets/images/projects/shine-dental-2-640.webp 640w, assets/images/projects/shine-dental-2-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 45vw" />
+                <img src="assets/images/projects/shine-dental-2.jpg" alt="Shine Dental Implants marketing collateral" width="1800" height="1050" loading="lazy" decoding="async"  />
+              </picture>
             </div>
             <div class="work-panel__body">
               <div>
@@ -288,7 +329,7 @@
             </div>
           </article>
 
-          <article class="work-panel" data-index="6">
+          <article class="work-panel" data-index="6" id="work-panel-6" role="tabpanel" aria-labelledby="work-tab-6" tabindex="-1">
             <div class="work-panel__tags"><span>Logo Design</span></div>
             <h3 class="work-panel__title">broken SPARK — Logo Re-design</h3>
             <div class="work-panel__meta">
@@ -297,7 +338,10 @@
               <div><strong>+20% Brand Recognition</strong>Result</div>
             </div>
             <div class="work-panel__media">
-              <img src="assets/images/projects/broken-spark-1.jpg" alt="broken SPARK logo re-design" />
+              <picture>
+                <source type="image/webp" srcset="assets/images/projects/broken-spark-1-640.webp 640w, assets/images/projects/broken-spark-1-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 45vw" />
+                <img src="assets/images/projects/broken-spark-1.jpg" alt="broken SPARK logo re-design" width="1800" height="1050" loading="lazy" decoding="async"  />
+              </picture>
             </div>
             <div class="work-panel__body">
               <div>
@@ -327,6 +371,7 @@
 <section id="about" class="about">
   <div class="container about__grid">
     <div data-reveal>
+      <h2 class="visually-hidden">About</h2>
       <p class="about__lede">A creative and commercially focused designer with <em>10+ years'</em> experience delivering digital branding, web graphics and marketing assets for SMEs.</p>
       <p class="about__body">I've designed 20+ responsive websites and brand identities — work that's contributed to real organic traffic growth and conversion uplift for the businesses I've worked with. I have a strong eye for layout, typography and visual hierarchy, and I've built AI-enhanced workflows that cut content production time significantly without cutting corners on quality. Fully remote-ready, with structured digital execution and brand consistency at the core of how I work.</p>
 
@@ -338,7 +383,7 @@
     </div>
 
     <div data-reveal>
-      <p class="eyebrow" style="margin-bottom:1.5rem;">Tools &amp; Skills</p>
+      <h3 class="eyebrow skills-heading">Tools &amp; Skills</h3>
       <ul class="skills-list">
         <li><h4>Adobe Illustrator</h4><p>Logo design, vector graphics, brand element development</p></li>
         <li><h4>Adobe Photoshop</h4><p>Photo editing, retouching, digital artwork &amp; mockups</p></li>
@@ -357,20 +402,30 @@
     <h2 class="contact__title" data-reveal>Got a project? Let's make it <em>look right.</em></h2>
     <div class="contact__links" data-reveal>
       <a class="contact__link" href="mailto:nic.designer@icloud.com">nic.designer@icloud.com</a>
-      <span class="contact__link">WhatsApp @n1c84</span>
+      <!-- TODO(Nic): replace the placeholder number with your real WhatsApp
+           number in full international format, e.g. https://wa.me/447700900123 -->
+      <a class="contact__link" href="https://wa.me/44XXXXXXXXXX">WhatsApp @n1c84</a>
+      <!-- TODO(Nic): drop your CV PDF at assets/nic-whitby-cv.pdf, then this works -->
+      <a class="contact__link" href="assets/nic-whitby-cv.pdf" download>Download CV (PDF)</a>
+      <!-- TODO(Nic): replace with your LinkedIn profile URL -->
+      <a class="contact__link" href="https://www.linkedin.com/in/YOUR-PROFILE">LinkedIn</a>
     </div>
   </div>
 </section>
+
+</main>
 
 <footer class="site-footer">
   <span>© <span id="year"></span> Nic Whitby</span>
   <span>Oswestry, Shropshire, UK</span>
 </footer>
 
-<script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="js/main.js"></script>
+<!-- Self-hosted so a CDN outage or a corporate script blocker can't take the
+     page down with it. Deferred so none of it blocks first paint. -->
+<script defer src="js/vendor/gsap.min.js"></script>
+<script defer src="js/vendor/ScrollTrigger.min.js"></script>
+<script defer src="js/vendor/lenis.min.js"></script>
+<script defer src="js/main.js"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>
