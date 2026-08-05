@@ -1171,7 +1171,12 @@ section {
   }
   .contact__links {
     flex-direction: column;
+    /* Without this, items stretch to full width and their text sits left */
+    align-items: center;
     gap: 1.25rem;
+  }
+  .contact__handle {
+    text-align: center;
   }
 
   /* Nav pill stays complete on mobile — Work and About shrink rather than
