@@ -621,258 +621,174 @@ section {
   }
 }
 
-/* ============ Work switcher ============ */
+/* ============ Work posters ============ */
+/* Each project is a full-bleed poster wearing its own client's colours,
+   set per-article via --field / --ink / --ink-dim / --pop. */
 
-.work-switcher {
-  display: grid;
-  grid-template-columns: 0.85fr 2fr;
-  gap: 3.5rem;
-  align-items: start;
-}
-
-.work-tabs {
-  display: flex;
-  flex-direction: column;
-  position: sticky;
-  top: 7rem;
-  gap: 0.4rem;
-}
-
-.work-tab {
-  appearance: none;
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 100px;
-  padding: 0.95rem 1.4rem;
-  display: flex;
-  align-items: baseline;
-  gap: 0.9rem;
-  text-align: left;
-  cursor: pointer;
-  color: var(--fg-dim);
-  transition: color 0.35s var(--ease), background-color 0.35s var(--ease),
-    border-color 0.35s var(--ease), transform 0.35s var(--ease);
-}
-.work-tab:hover {
-  background: rgba(243, 241, 236, 0.04);
-  transform: translateX(3px);
-}
-/* A press always registers visually, even mid-transition */
-.work-tab:active {
-  background: rgba(243, 241, 236, 0.08);
-  transform: translateX(1px) scale(0.99);
-}
-
-.work-tab__index {
-  font-size: 0.78rem;
-  color: var(--fg-faint);
-  transition: color 0.3s var(--ease);
-}
-
-.work-tab__title {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  line-height: 1.3;
-  transition: color 0.3s var(--ease);
-}
-
-/* Active tab reads as a frosted pill */
-.work-tab.is-active {
-  color: var(--fg);
-  background: rgba(201, 162, 75, 0.1);
-  border-color: rgba(201, 162, 75, 0.32);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transform: none;
-}
-.work-tab.is-active .work-tab__index,
-.work-tab.is-active .work-tab__title {
-  color: var(--accent);
-}
-
-.work-stage {
-  min-width: 0;
-  background: linear-gradient(160deg, rgba(24, 24, 28, 0.75) 0%, rgba(11, 11, 13, 0.6) 120%);
-  border: 1px solid rgba(243, 241, 236, 0.08);
-  border-radius: 28px;
-  padding: clamp(1.5rem, 3vw, 3rem);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 40px 90px -34px rgba(0, 0, 0, 0.7);
-}
-
-.work-stage__controls {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  margin-bottom: 2rem;
-}
-
-.work-stage__arrow {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid rgba(243, 241, 236, 0.16);
-  background: rgba(243, 241, 236, 0.04);
-  color: var(--fg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s var(--ease), border-color 0.3s var(--ease), transform 0.3s var(--ease);
-}
-.work-stage__arrow svg {
-  width: 16px;
-  height: 16px;
-}
-.work-stage__arrow:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--bg);
-  transform: scale(1.06);
-}
-.work-stage__arrow:active {
-  transform: scale(0.94);
-}
-
-.work-stage__count {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.95rem;
-  color: var(--fg-faint);
-  letter-spacing: 0.06em;
-}
-.work-stage__current {
-  color: var(--accent);
-}
-
-.work-panels {
+.poster {
+  background: var(--field);
+  color: var(--ink);
   position: relative;
+  overflow: hidden;
+  padding: clamp(3rem, 7vw, 6rem) 0;
+}
+.poster + .poster {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
-.work-panel {
-  display: none;
-}
-.work-panel.is-active {
-  display: block;
-}
-
-.work-panel__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  row-gap: 0.5rem;
-  margin-bottom: 1.25rem;
-}
-.work-panel__tags span {
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border: 1px solid var(--accent-dim);
-  background: rgba(201, 162, 75, 0.06);
-  border-radius: 100px;
-  padding: 0.3rem 0.75rem;
-}
-
-.work-panel__title {
-  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
-  margin-bottom: 2rem;
-}
-
-.work-panel__meta {
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  gap: 2.5rem;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  padding: 1.5rem 0;
-  margin-bottom: 2.5rem;
-}
-.work-panel__meta div {
-  font-size: 0.8rem;
-  color: var(--fg-faint);
-}
-.work-panel__meta strong {
-  display: block;
-  font-size: 0.95rem;
-  color: var(--fg);
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-}
-
-.work-panel__media {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.25rem;
-  margin-bottom: 2.5rem;
-}
-/* <picture> must not become the grid item — the <img> stays the grid child.
-   display:contents also promotes <source> to a grid item, so take it out. */
-.work-panel__media picture {
-  display: contents;
-}
-.work-panel__media source {
-  display: none;
-}
-
-/* Deliberate frame, image contained inside it. Never crop the work —
-   a logotype cropped mid-word is worse than letterboxing. */
-.work-panel__media img {
-  width: 100%;
-  height: auto;
-  align-self: start;
-  aspect-ratio: 16 / 10;
-  object-fit: contain;
-  background: rgba(243, 241, 236, 0.03);
-  border-radius: 18px;
-  border: 1px solid var(--line);
-  transition: transform 0.5s var(--ease), border-color 0.5s var(--ease);
-}
-.work-panel__media img:hover {
-  transform: translateY(-4px);
-  border-color: var(--line-strong);
-}
-
-.work-panel__body {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-}
-.work-panel__body h4 {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--fg);
-  margin-bottom: 1rem;
-}
-.work-panel__body ul {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom: 1.75rem;
-}
-.work-panel__body li {
-  padding-left: 1.4rem;
-  position: relative;
-  color: var(--fg-dim);
-  font-size: 0.95rem;
-}
-.work-panel__body li::before {
+/* A vast tonal disc keeps the flat field from going dead */
+.poster::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0.55em;
-  width: 6px;
-  height: 6px;
+  z-index: 0;
+  width: 80vw;
+  height: 80vw;
+  max-width: 1000px;
+  max-height: 1000px;
+  right: -18%;
+  top: -32%;
   border-radius: 50%;
-  background: var(--accent);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.14), transparent 62%);
+  pointer-events: none;
 }
-.work-panel__body p {
-  color: var(--fg-dim);
-  font-size: 0.95rem;
+.poster:nth-of-type(even)::before {
+  right: auto;
+  left: -18%;
+  top: auto;
+  bottom: -32%;
+}
+
+.poster__in {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.poster__kicker {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-dim);
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+}
+.poster__kicker i {
+  width: 34px;
+  height: 2px;
+  background: currentColor;
+  display: inline-block;
+  opacity: 0.6;
+}
+
+.poster__name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(3rem, 9.5vw, 7.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  max-width: 14ch;
+}
+.poster__name em {
+  font-style: italic;
+  color: var(--pop);
+  display: block;
+}
+
+.poster__stat {
+  margin-top: clamp(1.5rem, 3.5vw, 2.5rem);
+  display: flex;
+  align-items: baseline;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+}
+.poster__statNum {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  line-height: 1;
+  color: var(--pop);
+}
+.poster__statTxt {
+  font-size: 1rem;
+  max-width: 28ch;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+/* The work sits on the field like plates pinned to a wall */
+.poster__work {
+  margin-top: clamp(2rem, 4.5vw, 3.25rem);
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  align-items: stretch;
+}
+.poster:nth-of-type(even) .poster__work {
+  grid-template-columns: 1fr 1.4fr;
+}
+.poster__work--single,
+.poster:nth-of-type(even) .poster__work--single {
+  grid-template-columns: 1fr;
+  max-width: 880px;
+}
+.poster__work picture {
+  display: contents;
+}
+.poster__work source {
+  display: none;
+}
+.poster__work img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  background: rgba(0, 0, 0, 0.22);
+  padding: 1.25rem;
+  border-radius: 2px;
+  display: block;
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.65);
+}
+.poster__work img.is-cover {
+  object-fit: cover;
+  padding: 0;
+}
+
+.poster__foot {
+  margin-top: clamp(2rem, 4.5vw, 3rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.24);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem 2.5rem;
+}
+.poster__foot h4 {
+  font-family: var(--font-body);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-dim);
+  margin-bottom: 0.6rem;
+}
+.poster__foot p,
+.poster__foot li {
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.poster__foot ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 /* ============ About ============ */
@@ -1081,43 +997,8 @@ section {
 /* ============ Responsive ============ */
 
 @media (max-width: 900px) {
-  .work-switcher {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  .work-tabs {
-    position: static;
-    flex-direction: row;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 0.35rem;
-    /* Edge fade signals there are more projects off to the right */
-    mask-image: linear-gradient(to right, #000 88%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, #000 88%, transparent 100%);
-  }
-  .work-tabs::-webkit-scrollbar {
-    display: none;
-  }
-  .work-tab {
-    flex: 0 0 auto;
-    padding: 0.8rem 1.2rem;
-    white-space: nowrap;
-    border-color: rgba(243, 241, 236, 0.1);
-  }
-  .work-tab:hover {
-    transform: none;
-  }
   .statement {
     padding: 7rem 0;
-  }
-  .work-panel__meta {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  .work-panel__body {
-    grid-template-columns: 1fr;
-    gap: 2rem;
   }
   .about__grid {
     grid-template-columns: 1fr;
@@ -1162,9 +1043,6 @@ section {
   }
   .hero__scroll {
     display: none;
-  }
-  .work-tab__title {
-    font-size: 1rem;
   }
   .statement {
     padding: 5.5rem 0;

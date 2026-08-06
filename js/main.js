@@ -11,125 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const hasLibs = typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined";
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- Work switcher (no animation dependency) ---------- */
-  // Wired up first, and without GSAP, so tabs work in every scenario.
-  const workTabs = Array.from(document.querySelectorAll(".work-tab"));
-  const workPanels = Array.from(document.querySelectorAll(".work-panel"));
-  const stageCurrent = document.querySelector(".work-stage__current");
-  let activeIndex = 0;
-  let switchTl = null;
-
-  function setTabState(index) {
-    workTabs.forEach((tab, i) => {
-      const selected = i === index;
-      tab.classList.toggle("is-active", selected);
-      tab.setAttribute("aria-selected", String(selected));
-      // Roving tabindex: the tablist is a single tab stop
-      tab.setAttribute("tabindex", selected ? "0" : "-1");
-    });
-    if (stageCurrent) stageCurrent.textContent = String(index + 1).padStart(2, "0");
-
-    // When the tab strip scrolls horizontally (mobile), keep the active pill in view
-    const tabsWrap = document.querySelector(".work-tabs");
-    if (tabsWrap && tabsWrap.scrollWidth > tabsWrap.clientWidth + 4) {
-      const tab = workTabs[index];
-      const target = tab.offsetLeft - (tabsWrap.clientWidth - tab.offsetWidth) / 2;
-      tabsWrap.scrollTo({
-        left: Math.max(0, target),
-        behavior: reduceMotion ? "auto" : "smooth",
-      });
-    }
-  }
-
-  function switchTo(index, { focusPanel = false } = {}) {
-    if (!workPanels.length) return;
-    index = (index + workPanels.length) % workPanels.length;
-    if (index === activeIndex) return;
-
-    const outgoing = workPanels[activeIndex];
-    const incoming = workPanels[index];
-
-    setTabState(index);
-
-    const finish = () => {
-      activeIndex = index;
-      // Move the reading cursor so assistive tech announces the new panel
-      if (focusPanel) incoming.focus({ preventScroll: true });
-    };
-
-    // No libraries, or motion is unwelcome — swap instantly.
-    if (!hasLibs || reduceMotion) {
-      outgoing.classList.remove("is-active");
-      outgoing.style.display = "";
-      incoming.classList.add("is-active");
-      incoming.style.display = "";
-      incoming.style.opacity = "";
-      incoming.style.transform = "";
-      finish();
-      return;
-    }
-
-    // Interrupt any in-flight transition rather than dropping the input,
-    // so rapid tab clicks always land on the project the visitor asked for.
-    if (switchTl) {
-      switchTl.kill();
-      gsap.set(workPanels, { clearProps: "opacity,transform" });
-      workPanels.forEach((p, i) => {
-        p.classList.toggle("is-active", i === activeIndex);
-        p.style.display = i === activeIndex ? "block" : "none";
-      });
-    }
-
-    switchTl = gsap.timeline({ onComplete: finish });
-
-    switchTl
-      .to(outgoing, { opacity: 0, y: -16, duration: 0.3, ease: "power2.in" })
-      .set(outgoing, { display: "none" })
-      .call(() => {
-        outgoing.classList.remove("is-active");
-        incoming.classList.add("is-active");
-      })
-      .set(incoming, { display: "block", opacity: 0, y: 16 })
-      .to(incoming, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" })
-      .fromTo(
-        incoming.querySelectorAll(".work-panel__media img"),
-        { scale: 1.06 },
-        { scale: 1, duration: 0.4, ease: "power2.out" },
-        "<"
-      );
-  }
-
-  workTabs.forEach((tab) => {
-    tab.addEventListener("click", () => switchTo(parseInt(tab.dataset.index, 10)));
-  });
-
-  // Full tablist keyboard contract: Left/Right/Home/End
-  const tablist = document.querySelector(".work-tabs");
-  if (tablist) {
-    tablist.addEventListener("keydown", (e) => {
-      const keys = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"];
-      if (!keys.includes(e.key)) return;
-      e.preventDefault();
-
-      let next = activeIndex;
-      if (e.key === "ArrowRight" || e.key === "ArrowDown") next = activeIndex + 1;
-      else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = activeIndex - 1;
-      else if (e.key === "Home") next = 0;
-      else if (e.key === "End") next = workTabs.length - 1;
-
-      next = (next + workTabs.length) % workTabs.length;
-      switchTo(next);
-      workTabs[next].focus();
-    });
-  }
-
-  document.querySelectorAll(".work-stage__arrow").forEach((btn) => {
-    btn.addEventListener("click", () =>
-      switchTo(activeIndex + parseInt(btn.dataset.dir, 10), { focusPanel: true })
-    );
-  });
-
-  setTabState(0);
 
   /* ---------- Everything below is enhancement only ---------- */
   if (!hasLibs) {
@@ -247,13 +128,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  /* ---------- Work posters: entrance + parallax ---------- */
+  // Each poster reveals as it enters; motion direction alternates per
+  // project so consecutive posters feel distinct. Skipped entirely under
+  // reduced motion — content is visible by default.
+  if (!reduceMotion) {
+    gsap.utils.toArray(".poster").forEach((poster, i) => {
+      const dir = i % 2 ? 1 : -1;
+      const imgs = poster.querySelectorAll(".poster__work img");
+      const footCols = poster.querySelectorAll(".poster__foot > div");
+
+      gsap
+        .timeline({
+          scrollTrigger: { trigger: poster, start: "top 72%" },
+          defaults: { ease: "power3.out" },
+        })
+        .from(poster.querySelector(".poster__kicker"), { opacity: 0, y: 22, duration: 0.55 })
+        .from(
+          poster.querySelector(".poster__name"),
+          { opacity: 0, x: 70 * dir, duration: 0.9, ease: "power4.out" },
+          "-=0.3"
+        )
+        .from(poster.querySelector(".poster__stat"), { opacity: 0, y: 24, duration: 0.65 }, "-=0.55")
+        .from(imgs, { opacity: 0, y: 44, scale: 0.965, stagger: 0.14, duration: 0.8 }, "-=0.4")
+        .from(footCols, { opacity: 0, y: 22, stagger: 0.09, duration: 0.55 }, "-=0.5");
+
+      // Slow counter-drift on the plates while the poster crosses the viewport
+      imgs.forEach((img, j) => {
+        gsap.fromTo(
+          img,
+          { yPercent: 3.5 + j * 2 },
+          {
+            yPercent: -(3.5 + j * 2),
+            ease: "none",
+            scrollTrigger: { trigger: poster, start: "top bottom", end: "bottom top", scrub: 0.6 },
+          }
+        );
+      });
+    });
+  }
+
   /* ---------- Stat counters ---------- */
   gsap.utils.toArray("[data-count]").forEach((el) => {
     const target = parseFloat(el.dataset.count);
+    const prefix = el.dataset.prefix || "";
     const suffix = el.dataset.suffix || "";
 
     if (reduceMotion) {
-      el.textContent = target + suffix;
+      el.textContent = prefix + target + suffix;
       return;
     }
 
@@ -268,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
           duration: 1.6,
           ease: "power2.out",
           onUpdate: () => {
-            el.textContent = Math.round(counter.val) + suffix;
+            el.textContent = prefix + Math.round(counter.val) + suffix;
           },
         });
       },
