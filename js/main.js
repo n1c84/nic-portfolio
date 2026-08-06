@@ -129,12 +129,31 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ---------- Work posters: entrance + parallax ---------- */
-  // Each poster reveals as it enters; motion direction alternates per
-  // project so consecutive posters feel distinct. Skipped entirely under
-  // reduced motion — content is visible by default.
+  // Three entrance vocabularies, assigned so consecutive posters never share
+  // one — a mirrored direction alone read as the same event seven times.
+  // Every start state is applied by GSAP, so with no JS the posters render
+  // in place; the whole block is skipped under reduced motion.
+  const posterEntrances = [
+    // Wipe: the name is unmasked from its leading edge.
+    {
+      name: { clipPath: "inset(0 100% 0 0)", duration: 1, ease: "power4.out" },
+      plates: { opacity: 0, y: 48, stagger: 0.14, duration: 0.8 },
+    },
+    // Focus pull: the name resolves out of blur.
+    {
+      name: { opacity: 0, filter: "blur(18px)", scale: 1.04, duration: 0.95, ease: "power3.out" },
+      plates: { opacity: 0, scale: 0.92, stagger: 0.16, duration: 0.85 },
+    },
+    // Rise: the name lifts and settles, plates arrive laterally.
+    {
+      name: { opacity: 0, y: 64, duration: 0.9, ease: "power4.out" },
+      plates: { opacity: 0, x: 56, stagger: 0.14, duration: 0.8 },
+    },
+  ];
+
   if (!reduceMotion) {
     gsap.utils.toArray(".poster").forEach((poster, i) => {
-      const dir = i % 2 ? 1 : -1;
+      const shape = posterEntrances[i % posterEntrances.length];
       const imgs = poster.querySelectorAll(".poster__work img");
       const footCols = poster.querySelectorAll(".poster__foot > div");
 
@@ -143,29 +162,35 @@ document.addEventListener("DOMContentLoaded", () => {
           scrollTrigger: { trigger: poster, start: "top 72%" },
           defaults: { ease: "power3.out" },
         })
-        .from(poster.querySelector(".poster__kicker"), { opacity: 0, y: 22, duration: 0.55 })
-        .from(
-          poster.querySelector(".poster__name"),
-          { opacity: 0, x: 70 * dir, duration: 0.9, ease: "power4.out" },
-          "-=0.3"
-        )
-        .from(poster.querySelector(".poster__stat"), { opacity: 0, y: 24, duration: 0.65 }, "-=0.55")
-        .from(imgs, { opacity: 0, y: 44, scale: 0.965, stagger: 0.14, duration: 0.8 }, "-=0.4")
+        .from(poster.querySelector(".poster__name"), {
+          ...shape.name,
+          // Clear so no inline blur or clip-path is left sitting on the element
+          clearProps: "filter,clipPath,scale",
+        })
+        .from(poster.querySelector(".poster__meta"), { opacity: 0, y: 18, duration: 0.5 }, "-=0.5")
+        .from(poster.querySelector(".poster__stat"), { opacity: 0, y: 24, duration: 0.65 }, "-=0.35")
+        .from(imgs, { ...shape.plates, clearProps: "scale" }, "-=0.45")
         .from(footCols, { opacity: 0, y: 22, stagger: 0.09, duration: 0.55 }, "-=0.5");
-
-      // Slow counter-drift on the plates while the poster crosses the viewport
-      imgs.forEach((img, j) => {
-        gsap.fromTo(
-          img,
-          { yPercent: 3.5 + j * 2 },
-          {
-            yPercent: -(3.5 + j * 2),
-            ease: "none",
-            scrollTrigger: { trigger: poster, start: "top bottom", end: "bottom top", scrub: 0.6 },
-          }
-        );
-      });
     });
+
+    // Slow counter-drift on the plates as the poster crosses the viewport.
+    // Only where the poster is wide enough for the drift to actually read —
+    // on a phone it costs 12 scrubbed triggers to move a few pixels.
+    if (window.matchMedia("(min-width: 900px)").matches) {
+      gsap.utils.toArray(".poster").forEach((poster) => {
+        poster.querySelectorAll(".poster__work img").forEach((img, j) => {
+          gsap.fromTo(
+            img,
+            { yPercent: 3.5 + j * 2 },
+            {
+              yPercent: -(3.5 + j * 2),
+              ease: "none",
+              scrollTrigger: { trigger: poster, start: "top bottom", end: "bottom top", scrub: 0.6 },
+            }
+          );
+        });
+      });
+    }
   }
 
   /* ---------- Stat counters ---------- */
