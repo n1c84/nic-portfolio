@@ -278,157 +278,6 @@ html.lenis {
   overflow: hidden;
 }
 
-/* ---- Atmospheric backdrop: layered glows + haze, all CSS ---- */
-
-.hero__bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Volumetric light masses — the aurora itself */
-.hero__mass {
-  position: absolute;
-  z-index: 1;
-  border-radius: 50%;
-  filter: blur(90px);
-  will-change: transform;
-}
-
-.hero__mass--1 {
-  top: -22%;
-  left: -8%;
-  width: 68vw;
-  height: 58vw;
-  background: radial-gradient(
-    circle,
-    rgba(214, 172, 79, 0.72),
-    rgba(201, 162, 75, 0.3) 42%,
-    transparent 72%
-  );
-  animation: heroMassA 20s ease-in-out infinite;
-}
-
-.hero__mass--2 {
-  top: 2%;
-  right: -16%;
-  width: 52vw;
-  height: 52vw;
-  background: radial-gradient(
-    circle,
-    rgba(196, 116, 48, 0.5),
-    rgba(160, 100, 44, 0.16) 48%,
-    transparent 74%
-  );
-  animation: heroMassB 27s ease-in-out infinite;
-}
-
-.hero__mass--3 {
-  bottom: -26%;
-  left: 14%;
-  width: 64vw;
-  height: 44vw;
-  background: radial-gradient(circle, rgba(150, 124, 62, 0.55), transparent 70%);
-  animation: heroMassC 23s ease-in-out infinite;
-}
-
-/* Sweeping ribbons of light across the field */
-.hero__ribbon {
-  position: absolute;
-  z-index: 1;
-  left: -25%;
-  right: -25%;
-  height: 32vh;
-  filter: blur(64px);
-  background: linear-gradient(
-    101deg,
-    transparent 8%,
-    rgba(224, 182, 92, 0.62) 34%,
-    rgba(255, 250, 238, 0.34) 52%,
-    rgba(201, 162, 75, 0.44) 70%,
-    transparent 94%
-  );
-}
-.hero__ribbon--1 {
-  top: 18%;
-  animation: heroSweepA 19s ease-in-out infinite;
-}
-.hero__ribbon--2 {
-  top: 56%;
-  opacity: 0.5;
-  animation: heroSweepB 26s ease-in-out infinite;
-}
-
-/* Pulls the corners down so the type stays the brightest thing */
-.hero__vignette {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at 50% 44%,
-    transparent 42%,
-    rgba(11, 11, 13, 0.44) 76%,
-    rgba(11, 11, 13, 0.8) 100%
-  );
-}
-
-/* Dissolves the aurora into flat black before the next section starts */
-.hero__fade {
-  position: absolute;
-  z-index: 3;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 55vh;
-  background: linear-gradient(
-    to bottom,
-    rgba(11, 11, 13, 0) 0%,
-    rgba(11, 11, 13, 0.35) 30%,
-    rgba(11, 11, 13, 0.72) 58%,
-    rgba(11, 11, 13, 0.93) 80%,
-    #0b0b0d 100%
-  );
-}
-
-@keyframes heroMassA {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(6%, 4%, 0) scale(1.13); }
-}
-@keyframes heroMassB {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1.06); }
-  50% { transform: translate3d(-8%, 6%, 0) scale(1); }
-}
-@keyframes heroMassC {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(6%, -6%, 0) scale(1.12); }
-}
-@keyframes heroSweepA {
-  0%, 100% { transform: translate3d(-7%, 0, 0) rotate(-10deg); }
-  50% { transform: translate3d(7%, 0, 0) rotate(-7deg); }
-}
-@keyframes heroSweepB {
-  0%, 100% { transform: translate3d(7%, 0, 0) rotate(7deg); }
-  50% { transform: translate3d(-7%, 0, 0) rotate(4deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero__mass,
-  .hero__ribbon {
-    animation: none;
-  }
-  /* Drop the compositor layers too — nothing is animating them now */
-  .hero__mass {
-    will-change: auto;
-  }
-  /* Content is placed by JS with gsap.set() under reduced motion,
-     but guard the CSS side as well */
-  html {
-    scroll-behavior: auto;
-  }
-}
-
 .hero__inner {
   max-width: var(--container);
   margin: 0 auto;
@@ -514,40 +363,6 @@ html.lenis {
   font-size: 1.08rem;
   line-height: 1.62;
   color: var(--fg-dim);
-}
-
-.hero__scroll {
-  position: absolute;
-  z-index: 10;
-  bottom: 2.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--fg-faint);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.7rem;
-}
-.hero__scroll::after {
-  content: "";
-  width: 1px;
-  height: 34px;
-  background: linear-gradient(var(--accent), transparent);
-  animation: scrollpulse 2s ease-in-out infinite;
-}
-/* Declared after the rule above so it actually wins the cascade */
-@media (prefers-reduced-motion: reduce) {
-  .hero__scroll::after {
-    animation: none;
-    opacity: 0.6;
-  }
-}
-@keyframes scrollpulse {
-  0%, 100% { transform: scaleY(1); opacity: 0.4; }
-  50% { transform: scaleY(1.3); opacity: 1; }
 }
 
 /* ============ Section shared ============ */
@@ -1143,5 +958,419 @@ section {
      affordance on a touch surface anyway */
   .skills-list li:hover {
     padding-left: 0;
+  }
+}
+
+/* ============================================
+   Project hero — the header cycles through the work.
+   The whole hero takes on the dominant colour of the project on show;
+   text, nav and rail flip between light and dark to stay readable.
+   Colours are set per project by js/hero.js as custom properties.
+   ============================================ */
+
+.hero {
+  --hero-bg: var(--bg);
+  --hero-ink: var(--fg);
+  --hero-dim: #b3afa6;
+  --hero-line: rgba(243, 241, 236, 0.18);
+  --hero-accent: var(--accent);
+  --hero-ease: cubic-bezier(0.65, 0, 0.35, 1);
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  justify-content: stretch;
+  padding: 8rem 0 0;
+  background-color: var(--hero-bg);
+  color: var(--hero-ink);
+  transition: background-color 1.1s var(--hero-ease), color 0.9s ease;
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 1.5rem;
+  align-items: center;
+  text-align: left;
+  padding: 0 var(--gutter);
+  pointer-events: none;
+}
+.hero__copy,
+.hero__caption {
+  pointer-events: auto;
+}
+.hero__inner {
+  /* The stage is positioned against the whole hero on desktop. z-index auto
+     so this grid item doesn't form a stacking context that lifts the image
+     stage above the project rail. */
+  position: static;
+  z-index: auto;
+}
+.hero__copy {
+  grid-column: 1 / span 6;
+  padding-bottom: 2rem;
+  position: relative;
+  z-index: 3;
+}
+
+.hero .hero__eyebrow {
+  justify-content: flex-start;
+  color: var(--hero-accent);
+  transition: color 0.9s ease;
+}
+.hero .hero__eyebrow::before {
+  background: currentColor;
+}
+.hero .hero__eyebrow::after {
+  display: none;
+}
+
+.hero .hero__title {
+  /* Sized so each of the three lines holds on one line beside the work */
+  font-size: clamp(2.6rem, 4.6vw, 4.8rem);
+}
+.hero .hero__title em {
+  color: var(--hero-accent);
+  transition: color 0.9s ease;
+}
+
+.hero .hero__taglines {
+  justify-content: flex-start;
+  color: var(--hero-dim);
+  transition: color 0.9s ease;
+}
+.hero .hero__taglines span + span::before {
+  background: var(--hero-line);
+}
+.hero .hero__sub {
+  margin-left: 0;
+  max-width: 46ch;
+  color: var(--hero-dim);
+  transition: color 0.9s ease;
+}
+
+/* ---- The stage: work melts into the page colour, no frame ---- */
+
+.hero-stage {
+  position: absolute;
+  z-index: 1;
+  /* Close to the work's own proportions (1.3–1.83) so logos aren't cropped,
+     centred in the space between the nav and the rail */
+  top: 50%;
+  right: 0;
+  width: 58%;
+  aspect-ratio: 16 / 10;
+  max-height: calc(100% - 9rem);
+  transform: translateY(-54%);
+  /* closest-side: fully transparent before every edge, so no straight
+     line of the image can ever show — even mid-zoom or mid-blur */
+  -webkit-mask-image: radial-gradient(closest-side at 50% 50%, #000 30%, rgba(0, 0, 0, 0.85) 50%, rgba(0, 0, 0, 0.4) 75%, transparent 97%);
+  mask-image: radial-gradient(closest-side at 50% 50%, #000 30%, rgba(0, 0, 0, 0.85) 50%, rgba(0, 0, 0, 0.4) 75%, transparent 97%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  display: block;
+  opacity: 0;
+  transform: scale(1.06);
+  filter: blur(16px) saturate(0.8);
+  transition: opacity 1.1s ease, transform 1.6s var(--ease), filter 1.1s ease;
+  pointer-events: none;
+}
+.hero-slide.is-active {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  pointer-events: auto;
+  z-index: 2;
+}
+.hero-slide picture {
+  display: contents;
+}
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-slide.is-active img {
+  animation: heroDrift 7s var(--ease) forwards;
+}
+@keyframes heroDrift {
+  from { transform: scale(1.05) translateX(10px); }
+  to { transform: none; }
+}
+
+/* Without JS the first project simply shows, fully visible */
+html:not(.js) .hero-slide:first-child {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* First paint after shuffling: no transition, so the page never opens mid-fade */
+.hero.is-booting,
+.hero.is-booting * {
+  transition: none !important;
+}
+
+/* ---- Caption ---- */
+
+.hero__caption {
+  grid-column: 8 / span 5;
+  align-self: end;
+  position: relative;
+  z-index: 3;
+  padding-bottom: 2rem;
+  min-height: 7.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.hero__count {
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  padding: 0.45rem 0.8rem;
+  border-radius: 100px;
+  border: 1px solid var(--hero-line);
+  color: var(--hero-ink);
+  transition: color 0.9s ease, border-color 0.9s ease;
+}
+.hero__cap-text {
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.hero__cap-text.is-swapping {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.hero__cap-name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.hero__cap-name em {
+  font-style: italic;
+  color: var(--hero-accent);
+  transition: color 0.9s ease;
+}
+.hero__cap-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+  font-size: 0.88rem;
+  color: var(--hero-dim);
+  transition: color 0.9s ease;
+}
+.hero__cap-meta strong {
+  font-weight: 500;
+  color: var(--hero-accent);
+  transition: color 0.9s ease;
+}
+
+/* ---- Project rail ---- */
+
+.hero-rail {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  gap: 1.25rem;
+  max-width: calc(var(--container) + 2 * var(--gutter));
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--gutter) 2.25rem;
+}
+html:not(.js) .hero-rail {
+  display: none;
+}
+.hero-rail button {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 44px;
+  padding-top: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  color: var(--hero-dim);
+  transition: color 0.5s ease;
+}
+.hero-rail button:hover,
+.hero-rail button[aria-current="true"] {
+  color: var(--hero-ink);
+}
+.hero-rail button:focus-visible {
+  outline: 2px solid var(--hero-accent);
+  outline-offset: 6px;
+}
+.hero-rail__track {
+  display: block;
+  height: 2px;
+  background: var(--hero-line);
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.9s ease;
+}
+.hero-rail__bar {
+  position: absolute;
+  inset: 0;
+  background: var(--hero-ink);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: background-color 0.9s ease;
+}
+.hero-rail button.is-done .hero-rail__bar {
+  transform: scaleX(1);
+  opacity: 0.35;
+}
+.hero-rail__label {
+  display: flex;
+  gap: 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hero-rail__num {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.6;
+}
+
+/* ---- Nav over a light project ---- */
+
+body.hero-tone-light .site-nav:not(.is-scrolled) .site-nav__pill {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(17, 17, 19, 0.12);
+  box-shadow: 0 12px 40px -16px rgba(17, 17, 19, 0.25);
+  color: #111113;
+}
+body.hero-tone-light .site-nav:not(.is-scrolled) .site-nav__links a {
+  color: #3a3a40;
+}
+body.hero-tone-light .site-nav:not(.is-scrolled) .site-nav__links a:hover {
+  color: #111113;
+}
+body.hero-tone-light .site-nav:not(.is-scrolled) .site-nav__cta {
+  background: #111113;
+  color: #f3f1ec;
+}
+body.hero-tone-light .site-nav:not(.is-scrolled) .site-nav__cta:hover {
+  background: linear-gradient(180deg, var(--accent) 0%, #b08d3d 100%);
+  color: #14141a;
+}
+.site-nav__pill,
+.site-nav__links a,
+.site-nav__cta {
+  transition: background-color 0.6s var(--ease), border-color 0.6s var(--ease),
+    color 0.6s var(--ease), box-shadow 0.6s var(--ease), transform 0.3s var(--ease);
+}
+
+/* ---- Motion preferences ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero,
+  .hero *,
+  .hero-slide {
+    transition: none !important;
+  }
+  .hero-slide.is-active img {
+    animation: none;
+  }
+}
+
+/* ---- Tablet and phone: headline first, then the work, then the rail ---- */
+
+@media (max-width: 900px) {
+  .hero {
+    padding-top: 7.5rem;
+  }
+  .hero__inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hero__copy,
+  .hero__caption {
+    grid-column: 1;
+  }
+  .hero__copy {
+    padding-bottom: 0;
+  }
+  .hero .hero__eyebrow,
+  .hero .hero__taglines {
+    justify-content: center;
+  }
+  .hero .hero__eyebrow::before {
+    display: none;
+  }
+  .hero .hero__sub {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-stage {
+    position: relative;
+    top: auto;
+    width: auto;
+    max-height: none;
+    transform: none;
+    margin: 1.5rem calc(-1 * var(--gutter)) 0;
+    grid-column: 1;
+  }
+  .hero__caption {
+    align-items: center;
+    text-align: center;
+    padding-bottom: 1.25rem;
+    min-height: 0;
+  }
+  .hero__count {
+    align-self: center;
+  }
+  .hero__cap-meta {
+    justify-content: center;
+  }
+  .hero-rail {
+    gap: 0.5rem;
+    padding-bottom: 1.75rem;
+  }
+  .hero-rail__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding-top: 7rem;
+    padding-bottom: 0;
+  }
+  .hero .hero__taglines span:last-child {
+    color: var(--hero-accent);
+  }
+}
+
+/* Keep the nav pill clear of a phone's notch / status bar */
+.site-nav {
+  top: calc(1.5rem + env(safe-area-inset-top, 0px));
+}
+.site-nav.is-scrolled {
+  top: calc(0.85rem + env(safe-area-inset-top, 0px));
+}
+@media (max-width: 600px) {
+  .site-nav {
+    top: calc(1rem + env(safe-area-inset-top, 0px));
   }
 }
